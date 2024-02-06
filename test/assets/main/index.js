@@ -334,7 +334,7 @@ System.register("chunks:///_virtual/main", ['./debug-view-runtime-control.ts', '
 });
 
 System.register("chunks:///_virtual/performance-test.ts", ['./rollupPluginModLoBabelHelpers.js', 'cc'], function (exports) {
-  var _applyDecoratedDescriptor, _inheritsLoose, _createClass, _initializerDefineProperty, _assertThisInitialized, _asyncToGenerator, _regeneratorRuntime, cclegacy, _decorator, Prefab, Label, Slider, Camera, Button, Node, game, Component, view, director, Vec3, randomRange, instantiate;
+  var _applyDecoratedDescriptor, _inheritsLoose, _createClass, _initializerDefineProperty, _assertThisInitialized, _asyncToGenerator, _regeneratorRuntime, cclegacy, _decorator, Prefab, Label, Slider, Camera, Button, Node, Component, view, director, Vec3, randomRange, instantiate;
 
   return {
     setters: [function (module) {
@@ -354,7 +354,6 @@ System.register("chunks:///_virtual/performance-test.ts", ['./rollupPluginModLoB
       Camera = module.Camera;
       Button = module.Button;
       Node = module.Node;
-      game = module.game;
       Component = module.Component;
       view = module.view;
       director = module.director;
@@ -413,6 +412,7 @@ System.register("chunks:///_virtual/performance-test.ts", ['./rollupPluginModLoB
           _this.time = 0;
           _this.max = 10;
           _this.test = false;
+          _this.tempCount = 10;
           return _this;
         }
 
@@ -501,17 +501,6 @@ System.register("chunks:///_virtual/performance-test.ts", ['./rollupPluginModLoB
           this.label.string = this.targetFps.toString();
         };
 
-        _proto.DownloadCanvasAsImage = function DownloadCanvasAsImage() {
-          var downloadLink = document.createElement('a');
-          downloadLink.setAttribute('download', 'CanvasAsImage.png');
-          var canvas = game.canvas;
-          canvas.toBlob(function (blob) {
-            var url = URL.createObjectURL(blob);
-            downloadLink.setAttribute('href', url);
-            downloadLink.click();
-          });
-        };
-
         _createClass(performance_test, [{
           key: "fps",
           get: function get() {
@@ -523,9 +512,15 @@ System.register("chunks:///_virtual/performance-test.ts", ['./rollupPluginModLoB
             return fps;
           },
           set: function set(v) {
-            if (this.fpsList.length == 10) {
-              this.fpsList[9 - (9 - this.index)] = v;
+            if (this.fpsList.length == this.tempCount) {
+              var count = this.tempCount - 1;
+              this.fpsList[count - (count - this.index)] = v;
               this.index++;
+
+              if (this.index == this.fpsList.length) {
+                this.index = 0;
+              }
+
               return;
             }
 
