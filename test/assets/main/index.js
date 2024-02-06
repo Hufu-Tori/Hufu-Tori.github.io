@@ -412,7 +412,7 @@ System.register("chunks:///_virtual/performance-test.ts", ['./rollupPluginModLoB
           _this.time = 0;
           _this.max = 10;
           _this.test = false;
-          _this.tempCount = 10;
+          _this.tempCount = 120;
           return _this;
         }
 
