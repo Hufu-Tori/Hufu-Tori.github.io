@@ -140,7 +140,10 @@ System.register("chunks:///_virtual/rollupPluginModLoBabelHelpers.js", [], funct
 
             if ("completed" === state) {
               if ("throw" === method) throw arg;
-              return doneResult();
+              return {
+                value: void 0,
+                done: !0
+              };
             }
 
             for (context.method = method, context.arg = arg;;) {
@@ -204,7 +207,7 @@ System.register("chunks:///_virtual/rollupPluginModLoBabelHelpers.js", [], funct
         }
 
         function values(iterable) {
-          if (iterable) {
+          if (iterable || "" === iterable) {
             var iteratorMethod = iterable[iteratorSymbol];
             if (iteratorMethod) return iteratorMethod.call(iterable);
             if ("function" == typeof iterable.next) return iterable;
@@ -221,16 +224,7 @@ System.register("chunks:///_virtual/rollupPluginModLoBabelHelpers.js", [], funct
             }
           }
 
-          return {
-            next: doneResult
-          };
-        }
-
-        function doneResult() {
-          return {
-            value: undefined,
-            done: !0
-          };
+          throw new TypeError(typeof iterable + " is not iterable");
         }
 
         return GeneratorFunction.prototype = GeneratorFunctionPrototype, defineProperty(Gp, "constructor", {

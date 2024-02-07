@@ -334,7 +334,7 @@ System.register("chunks:///_virtual/main", ['./debug-view-runtime-control.ts', '
 });
 
 System.register("chunks:///_virtual/performance-test.ts", ['./rollupPluginModLoBabelHelpers.js', 'cc'], function (exports) {
-  var _applyDecoratedDescriptor, _inheritsLoose, _createClass, _initializerDefineProperty, _assertThisInitialized, _asyncToGenerator, _regeneratorRuntime, cclegacy, _decorator, Prefab, Label, Slider, Camera, Button, Node, Component, view, director, Vec3, randomRange, instantiate;
+  var _applyDecoratedDescriptor, _inheritsLoose, _createClass, _initializerDefineProperty, _assertThisInitialized, _asyncToGenerator, _regeneratorRuntime, cclegacy, _decorator, Prefab, Label, Slider, Camera, Button, Node, director, Component, view, Vec3, randomRange, instantiate;
 
   return {
     setters: [function (module) {
@@ -354,9 +354,9 @@ System.register("chunks:///_virtual/performance-test.ts", ['./rollupPluginModLoB
       Camera = module.Camera;
       Button = module.Button;
       Node = module.Node;
+      director = module.director;
       Component = module.Component;
       view = module.view;
-      director = module.director;
       Vec3 = module.Vec3;
       randomRange = module.randomRange;
       instantiate = module.instantiate;
@@ -438,6 +438,7 @@ System.register("chunks:///_virtual/performance-test.ts", ['./rollupPluginModLoB
             if (this.time > this.max) {
               this.block = true;
               this.end.active = true;
+              this.onSave();
               return;
             }
 
@@ -490,7 +491,25 @@ System.register("chunks:///_virtual/performance-test.ts", ['./rollupPluginModLoB
           this.test = true;
         };
 
-        _proto.onSave = function onSave() {};
+        _proto.onSave = function onSave() {
+          var device = director.root.device;
+          var exportObj = {
+            FPS: this.targetFps,
+            RENDERER: device.renderer,
+            VENDOR: device.vendor,
+            TRIANGLE: device.numTris,
+            DRAW_CALL: device.numDrawCalls
+          };
+          var exportName = "webgl-test";
+          var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportObj));
+          var downloadAnchorNode = document.createElement('a');
+          downloadAnchorNode.setAttribute("href", dataStr);
+          downloadAnchorNode.setAttribute("download", exportName + ".txt");
+          document.body.appendChild(downloadAnchorNode); // required for firefox
+
+          downloadAnchorNode.click();
+          downloadAnchorNode.remove();
+        };
 
         _proto.onSlider = function onSlider(slider) {
           if (this.test) {
